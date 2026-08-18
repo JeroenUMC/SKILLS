@@ -1,0 +1,5 @@
+interface:
+  display_name: "Finalize"
+  short_description: "Close a session and identify loose ends"
+policy:
+  allow_implicit_invocation: false

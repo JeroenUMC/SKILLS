@@ -1,0 +1,5 @@
+interface:
+  display_name: "Setup Skills"
+  short_description: "Configure repository skill workflows"
+policy:
+  allow_implicit_invocation: false

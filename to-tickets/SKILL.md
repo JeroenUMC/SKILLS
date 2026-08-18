@@ -133,7 +133,7 @@ Do not publish a ticket with known unresolved SMART gaps unless the user explici
 
 ### 9. Publish the tickets to the configured tracker
 
-Publish the approved tickets. **How** depends on the tracker `/setup-matt-pocock-skills` configured — the tickets are the same either way, only the shape of the blocking edges changes:
+Publish the approved tickets. **How** depends on the tracker `/setup-skills` configured — the tickets are the same either way, only the shape of the blocking edges changes:
 
 - **Local files** → write one file per ticket under `.scratch/<feature-slug>/issues/<NN>-<slug>.md`, numbered from `01` in dependency order (blockers first). Each file's “Blocked by” lists the numbers/titles it depends on.
 - **A real issue tracker (GitHub, Linear, …)** → publish one issue per ticket in dependency order so blocking edges can reference real identifiers. Use native blocking/sub-issue relationships where supported; otherwise write the blocking issues in the body. Apply `ready-for-agent` unless instructed otherwise.
@@ -234,4 +234,4 @@ The user, product, or operational value this delivers.
 
 Avoid specific file paths or code snippets — they go stale fast. Exception: when a prototype encodes a decision more precisely than prose can (for example a state machine, reducer, schema, or type shape), inline only the decision-rich part and note that it came from the prototype.
 
-Work the frontier one ticket at a time with `/implement`, clearing context between tickets.
+Work the frontier one ticket at a time with `/issue-orchestrator`, clearing context between tickets.

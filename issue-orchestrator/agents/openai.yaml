@@ -1,5 +1,5 @@
 interface:
   display_name: "Issue Orchestrator"
-  short_description: "Turn an approved issue into a draft PR"
+  short_description: "Implement an issue and finalize locally or as a draft PR"
 policy:
   allow_implicit_invocation: false

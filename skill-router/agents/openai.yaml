@@ -1,0 +1,5 @@
+interface:
+  display_name: "Skill Router"
+  short_description: "Choose the right skill workflow"
+policy:
+  allow_implicit_invocation: false

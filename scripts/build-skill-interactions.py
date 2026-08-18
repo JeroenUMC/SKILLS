@@ -46,10 +46,15 @@ def load() -> tuple[list[dict], list[dict]]:
     nodes = json.loads((GRAPH / "skills.json").read_text(encoding="utf-8"))["skills"]
     known = {node["id"] for node in nodes}
     edges: list[dict] = []
-    for skill_path in sorted(ROOT.glob("*/SKILL.md")):
+    paths: set[Path] = set()
+    for node in nodes:
+        skill_path = ROOT / node["kind"] / node["id"] / "SKILL.md"
+        if not skill_path.is_file():
+            raise ValueError(f"missing skill file for {node['id']}: {skill_path}")
+        paths.add(skill_path)
         source, relationships = parse_skill(skill_path)
-        if source not in known:
-            raise ValueError(f"{source} is not present in graph/skills.json")
+        if source != node["id"]:
+            raise ValueError(f"frontmatter name {source} does not match graph id {node['id']}")
         for relation, targets in relationships.items():
             if relation not in RELATION_CATEGORIES:
                 raise ValueError(f"unknown relationship {relation} in {skill_path}")
@@ -64,6 +69,10 @@ def load() -> tuple[list[dict], list[dict]]:
                     "relation": relation,
                     "category": RELATION_CATEGORIES[relation],
                 })
+    unexpected = sorted(ROOT.glob("*/SKILL.md"))
+    unexpected += sorted(path for path in ROOT.glob("*/*/SKILL.md") if path not in paths)
+    if unexpected:
+        raise ValueError(f"skill files are not declared in graph/skills.json: {unexpected}")
     return nodes, edges
 
 

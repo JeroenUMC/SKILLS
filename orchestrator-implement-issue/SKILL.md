@@ -1,15 +1,15 @@
 ---
-name: issue-orchestrator
+name: orchestrator-implement-issue
 description: Implement one approved spec or issue through testing, verification, review, and local commit or draft pull request.
 disable-model-invocation: true
 ---
 
-# Issue Orchestrator
+# Implement Issue Orchestrator
 
 This is the canonical workflow for implementing one approved spec or issue. It supports two modes:
 
 - **Standalone:** invoked directly by the user. Work in the current repository, branch, and worktree. Commit locally; do not push or create a pull request unless explicitly requested.
-- **Delegated:** invoked by `/milestone-orchestrator` with an approved run ID, issue assignment, isolated worktree and branch, and per-role model metadata. Commit, push, and create a draft PR targeting `main`.
+- **Delegated:** invoked by `/orchestrator-implement-milestone` with an approved run ID, issue assignment, isolated worktree and branch, and per-role model metadata. Commit, push, and create a draft PR targeting `main`.
 
 Do not use standalone mode inside a milestone orchestration run.
 
@@ -18,7 +18,7 @@ Do not use standalone mode inside a milestone orchestration run.
 - In delegated mode, work only in the assigned Git worktree and branch `agent/issue-<number>-<slug>` based on `main`.
 - In both modes, do not merge, close issues, change project fields, release, or perform destructive operations.
 - The verification agent is read-only. The issue orchestrator owns all edits, including tests and review fixes.
-- Only `/milestone-orchestrator` writes shared `state.json`.
+- Only `/orchestrator-implement-milestone` writes shared `state.json`.
 
 ## Sequence
 

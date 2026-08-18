@@ -1,5 +1,5 @@
 interface:
-  display_name: "Issue Orchestrator"
+  display_name: "Implement Issue Orchestrator"
   short_description: "Implement an issue and finalize locally or as a draft PR"
 policy:
   allow_implicit_invocation: false

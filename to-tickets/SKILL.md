@@ -234,4 +234,4 @@ The user, product, or operational value this delivers.
 
 Avoid specific file paths or code snippets — they go stale fast. Exception: when a prototype encodes a decision more precisely than prose can (for example a state machine, reducer, schema, or type shape), inline only the decision-rich part and note that it came from the prototype.
 
-Work the frontier one ticket at a time with `/issue-orchestrator`, clearing context between tickets.
+Work the frontier one ticket at a time with `/orchestrator-implement-issue`, clearing context between tickets.

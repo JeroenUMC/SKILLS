@@ -1,0 +1,27 @@
+{
+  "schema_version": 1,
+  "relationships": [
+    {"source": "skill-router", "target": "orchestrator-idea-to-ship", "type": "direct", "relation": "routes-to", "basis": "main flow"},
+    {"source": "skill-router", "target": "orchestrator-implement-issue", "type": "direct", "relation": "routes-to", "basis": "single issue implementation"},
+    {"source": "skill-router", "target": "orchestrator-implement-milestone", "type": "direct", "relation": "routes-to", "basis": "milestone implementation"},
+    {"source": "orchestrator-idea-to-ship", "target": "grill-with-docs", "type": "direct", "relation": "invokes", "basis": "step 1"},
+    {"source": "orchestrator-idea-to-ship", "target": "prototype", "type": "direct", "relation": "branches-to", "basis": "step 2"},
+    {"source": "orchestrator-idea-to-ship", "target": "handoff", "type": "direct", "relation": "bridges", "basis": "step 2"},
+    {"source": "orchestrator-idea-to-ship", "target": "to-spec", "type": "direct", "relation": "invokes", "basis": "step 3"},
+    {"source": "orchestrator-idea-to-ship", "target": "to-tickets", "type": "direct", "relation": "invokes", "basis": "step 4"},
+    {"source": "orchestrator-idea-to-ship", "target": "orchestrator-implement-issue", "type": "direct", "relation": "hands-off-to", "basis": "step 5"},
+    {"source": "orchestrator-implement-milestone", "target": "orchestrator-implement-issue", "type": "direct", "relation": "delegates-to", "basis": "delegated issue execution"},
+    {"source": "orchestrator-implement-issue", "target": "tdd", "type": "direct", "relation": "uses", "basis": "implementation sequence"},
+    {"source": "orchestrator-implement-issue", "target": "code-review", "type": "direct", "relation": "uses", "basis": "review sequence"},
+    {"source": "grill-with-docs", "target": "domain-modeling", "type": "direct", "relation": "uses", "basis": "documented skill contract"},
+    {"source": "grill-me", "target": "grilling", "type": "direct", "relation": "uses", "basis": "documented skill contract"},
+    {"source": "grill-with-docs", "target": "grilling", "type": "direct", "relation": "uses", "basis": "documented skill contract"},
+    {"source": "diagnosing-bugs", "target": "improve-codebase-architecture", "type": "direct", "relation": "hands-off-to", "basis": "post-mortem path"},
+    {"source": "to-tickets", "target": "orchestrator-implement-issue", "type": "direct", "relation": "hands-off-to", "basis": "frontier execution"},
+    {"source": "wayfinder", "target": "research", "type": "indirect", "relation": "composes-well", "basis": "decision investigation"},
+    {"source": "wayfinder", "target": "orchestrator-idea-to-ship", "type": "indirect", "relation": "composes-well", "basis": "wayfinder completion handoff"},
+    {"source": "triage", "target": "refine", "type": "indirect", "relation": "composes-well", "basis": "agent-ready issue path"},
+    {"source": "refine", "target": "orchestrator-implement-issue", "type": "indirect", "relation": "composes-well", "basis": "refined issue becomes executable"},
+    {"source": "orchestrator-implement-issue", "target": "finalize", "type": "indirect", "relation": "composes-well", "basis": "session closeout"}
+  ]
+}

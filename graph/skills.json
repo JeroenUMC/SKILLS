@@ -1,0 +1,33 @@
+{
+  "schema_version": 1,
+  "skills": [
+    {"id": "skill-router", "kind": "router"},
+    {"id": "setup-skills", "kind": "setup"},
+    {"id": "orchestrator-implement-issue", "kind": "orchestrator"},
+    {"id": "orchestrator-implement-milestone", "kind": "orchestrator"},
+    {"id": "orchestrator-idea-to-ship", "kind": "orchestrator"},
+    {"id": "changelog", "kind": "utility"},
+    {"id": "code-review", "kind": "engineering"},
+    {"id": "codebase-design", "kind": "vocabulary"},
+    {"id": "diagnosing-bugs", "kind": "engineering"},
+    {"id": "domain-modeling", "kind": "vocabulary"},
+    {"id": "grill-me", "kind": "planning"},
+    {"id": "grill-with-docs", "kind": "planning"},
+    {"id": "grilling", "kind": "primitive"},
+    {"id": "handoff", "kind": "session"},
+    {"id": "improve-codebase-architecture", "kind": "engineering"},
+    {"id": "prototype", "kind": "exploration"},
+    {"id": "refine", "kind": "planning"},
+    {"id": "research", "kind": "research"},
+    {"id": "resolving-merge-conflicts", "kind": "maintenance"},
+    {"id": "skill-audit", "kind": "audit"},
+    {"id": "tdd", "kind": "engineering"},
+    {"id": "teach", "kind": "learning"},
+    {"id": "to-spec", "kind": "planning"},
+    {"id": "to-tickets", "kind": "planning"},
+    {"id": "triage", "kind": "planning"},
+    {"id": "wayfinder", "kind": "planning"},
+    {"id": "writing-great-skills", "kind": "reference"},
+    {"id": "finalize", "kind": "session"}
+  ]
+}

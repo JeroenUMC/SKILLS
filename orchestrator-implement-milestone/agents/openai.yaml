@@ -1,5 +1,5 @@
 interface:
-  display_name: "Milestone Orchestrator"
+  display_name: "Implement Milestone Orchestrator"
   short_description: "Execute GitHub milestones in dependency waves"
 policy:
   allow_implicit_invocation: false

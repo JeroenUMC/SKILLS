@@ -1,0 +1,5 @@
+interface:
+  display_name: "Idea To Ship Orchestrator"
+  short_description: "Shape an idea into approved implementation tickets"
+policy:
+  allow_implicit_invocation: false

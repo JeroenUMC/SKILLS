@@ -1,17 +1,17 @@
 ---
-name: milestone-orchestrator
+name: orchestrator-implement-milestone
 description: Plan and execute a GitHub milestone in dependency waves, delegating approved ready-for-agent issues to issue orchestrators.
 disable-model-invocation: true
 ---
 
-# Milestone Orchestrator
+# Implement Milestone Orchestrator
 
-Run this skill only when the user explicitly invokes `/milestone-orchestrator`.
+Run this skill only when the user explicitly invokes `/orchestrator-implement-milestone`.
 
 ## Invocation
 
-- New run: `/milestone-orchestrator <milestone-number>`
-- Resume: `/milestone-orchestrator <milestone-number> resume <run-id>`
+- New run: `/orchestrator-implement-milestone <milestone-number>`
+- Resume: `/orchestrator-implement-milestone <milestone-number> resume <run-id>`
 
 Use `gh` against the current repository. Read repository instructions before acting. The current local subagent runtime is the execution backend; model assignments are recorded metadata until explicit runtime model routing is available. Do not claim that a Copilot model was used when it was not enforceable.
 

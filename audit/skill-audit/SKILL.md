@@ -14,9 +14,12 @@ Read [`AUDIT.md`](AUDIT.md) before reviewing. It contains the failure modes, evi
 
 ### 1. Reconstruct scope
 
-List every skill visibly invoked in the session and every skill a delegated agent visibly invoked or modified. Include the current skill. Record uncertainty rather than guessing; an invisible invocation is out of scope.
+First determine whether any skill files changed during the session, or whether a delegated agent visibly invoked or modified a skill.
+If neither occurred, record the current skill as the only in-scope skill and skip full historical reconstruction.
+If either occurred, list every skill visibly invoked in the session and every delegated skill use visible in the trace. Include the current skill.
+Record uncertainty rather than guessing; an invisible invocation is out of scope.
 
-Completion criterion: the scope list accounts for every observable skill invocation and names every missing trace entry.
+Completion criterion: when reconstruction is required, the scope list accounts for every observable skill invocation and names every missing trace entry. Otherwise, the audit records why reconstruction was skipped.
 
 ### 2. Inspect the skills
 

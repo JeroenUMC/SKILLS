@@ -147,6 +147,9 @@ issue, determine and validate:
 
 - the target milestone;
 - whether an existing milestone, a new milestone, or no milestone is the best fit;
+- the tracking repository and issue;
+- the implementation repository, if different;
+- whether implementation follow-up issues are being created now or deferred;
 - workflow readiness: `ready-for-human`, `ready-for-agent`, or `agent/blocked`;
 - non-workflow labels to preserve, such as domain or team labels;
 - true native GitHub blocking relationships;
@@ -168,6 +171,10 @@ cannot meaningfully proceed without it.
 ### 1. Read the issue in full
 
 Use the issue body, comments, linked references, and relevant project context. Do not refine from the title alone.
+
+When the issue makes implementation or current-behaviour claims, verify them against the current source,
+tests, documentation, or relevant history before classifying them as defects or requirements. Record the
+commit/date checked, or mark the claim as unverified when current evidence is unavailable.
 
 For batches or complex dependencies, delegate parallel issue diagnosis and milestone analysis to subagents; the main agent reconciles findings and owns synthesis, approval, and publication.
 

@@ -2,6 +2,8 @@
 name: to-tickets
 description: Break a plan, spec, or conversation into SMART, tracer-bullet tickets with explicit acceptance criteria, a Definition of Done, and blocking edges, published to the configured tracker.
 disable-model-invocation: true
+relationships:
+  hands-off-to: [orchestrator-implement-issue]
 ---
 
 # To Tickets

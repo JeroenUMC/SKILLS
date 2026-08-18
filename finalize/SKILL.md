@@ -3,6 +3,8 @@ name: finalize
 description: Close the current session by auditing loose ends, provenance, traces, worktree state, and skill use.
 disable-model-invocation: true
 argument-hint: "Optional closeout focus or requested trace"
+relationships:
+  invokes: [skill-audit]
 ---
 
 # Finalize

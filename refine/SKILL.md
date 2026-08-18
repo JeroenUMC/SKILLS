@@ -2,6 +2,8 @@
 name: refine
 description: Refine an existing issue or work item into a clear, SMART, right-sized item with explicit acceptance criteria, Definition of Done, dependencies, and a Definition of Ready check.
 disable-model-invocation: true
+relationships:
+  hands-off-to: [orchestrator-implement-issue]
 ---
 
 # Refine

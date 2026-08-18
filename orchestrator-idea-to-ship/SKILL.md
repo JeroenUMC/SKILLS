@@ -3,6 +3,10 @@ name: orchestrator-idea-to-ship
 description: Turn a codebase idea into an approved spec, executable tickets, and implementation handoff.
 disable-model-invocation: true
 argument-hint: "The idea or outcome to develop"
+relationships:
+  invokes: [grill-with-docs, to-spec, to-tickets]
+  uses: [prototype, handoff]
+  hands-off-to: [orchestrator-implement-issue]
 ---
 
 # Idea To Ship Orchestrator

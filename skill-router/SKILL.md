@@ -2,6 +2,8 @@
 name: skill-router
 description: Ask which skill or flow fits your situation. A router over the skills in this repo.
 disable-model-invocation: true
+relationships:
+  invokes: [orchestrator-idea-to-ship, orchestrator-implement-issue, orchestrator-implement-milestone]
 ---
 
 # Skill Router

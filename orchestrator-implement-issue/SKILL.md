@@ -2,6 +2,9 @@
 name: orchestrator-implement-issue
 description: Implement one approved spec or issue through testing, verification, review, and local commit or draft pull request.
 disable-model-invocation: true
+relationships:
+  uses: [tdd, code-review]
+  optional-companion: [finalize]
 ---
 
 # Implement Issue Orchestrator

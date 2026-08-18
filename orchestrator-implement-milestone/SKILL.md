@@ -2,6 +2,8 @@
 name: orchestrator-implement-milestone
 description: Plan and execute a GitHub milestone in dependency waves, delegating approved ready-for-agent issues to issue orchestrators.
 disable-model-invocation: true
+relationships:
+  delegates: [orchestrator-implement-issue]
 ---
 
 # Implement Milestone Orchestrator

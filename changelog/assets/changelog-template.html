@@ -1,0 +1,235 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{{REPO}} changelog — {{WINDOW_LABEL}}</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script type="module">
+      import mermaid from "https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs";
+      mermaid.initialize({ startOnLoad: true, theme: "neutral", securityLevel: "loose", flowchart: { htmlLabels: true, curve: "basis" } });
+    </script>
+    <style>
+      .card-rule { border-left: 5px solid; }
+      .grid-bg { background-image: radial-gradient(#e7e5e4 1px, transparent 1px); background-size: 22px 22px; }
+      .mermaid { display: flex; justify-content: center; }
+      details > summary { list-style: none; cursor: pointer; }
+      details > summary::-webkit-details-marker { display: none; }
+      details[open] > summary .chev { transform: rotate(90deg); }
+      .chev { transition: transform .15s ease; }
+    </style>
+  </head>
+  <body class="bg-stone-50 text-slate-900 font-sans antialiased">
+    <main class="max-w-5xl mx-auto px-6 py-12 space-y-14">
+
+      <!-- ═══════════════ 1 · HEADER (keep, incl. badge legend) ═══════════════ -->
+      <header class="space-y-5">
+        <div class="flex flex-wrap items-center gap-2 text-xs">
+          <span class="px-2 py-1 rounded bg-indigo-100 text-indigo-800 font-semibold uppercase tracking-wider">Changelog · user view</span>
+          <span class="px-2 py-1 rounded bg-slate-200 text-slate-700 font-mono">merged {{SINCE}} → {{UNTIL}}</span>
+          <span class="text-slate-500">source: merged GitHub PRs · {{REPO_COUNT}} repo(s)</span>
+        </div>
+        <h1 class="font-serif text-4xl leading-tight">{{TITLE — e.g. "acme-cli — what changed this fortnight"}}</h1>
+        <p class="text-slate-600 max-w-3xl text-lg leading-relaxed">
+          {{One or two sentences: the functional, user-facing changes across
+          <code class="font-mono text-sm bg-stone-200 px-1 rounded">{{REPO}}</code>{{ and its submodules}} —
+          everything that changes what a user <strong>runs</strong>, <strong>configures</strong>, or
+          <strong>gets as output</strong>. Internal refactors, CI, and dependency bumps are noted but not
+          dwelt on. Every claim links the PR that backs it.}}
+        </p>
+
+        <!-- badge legend — STAYS. Trim rows to the badge types you actually use. -->
+        <div class="flex flex-wrap gap-2 text-xs pt-1">
+          <span class="px-2 py-1 rounded-full bg-emerald-100 text-emerald-800 font-medium">New / feature</span>
+          <span class="px-2 py-1 rounded-full bg-sky-100 text-sky-800 font-medium">Bug fix</span>
+          <span class="px-2 py-1 rounded-full bg-rose-100 text-rose-800 font-medium">Removed</span>
+          <span class="px-2 py-1 rounded-full bg-violet-100 text-violet-800 font-medium">DB migration</span>
+          <span class="px-2 py-1 rounded-full bg-amber-100 text-amber-800 font-medium">⚠ Action needed</span>
+          <span class="px-2 py-1 rounded-full bg-slate-200 text-slate-700 font-medium">Docs</span>
+          <span class="px-2 py-1 rounded-full bg-stone-200 text-stone-600 font-medium">CI / deps</span>
+        </div>
+      </header>
+
+      <!-- ═══════════════ 2 · AT A GLANCE (keep; adapt the cards to real counts) ═══ -->
+      <section class="space-y-5">
+        <h2 class="font-serif text-2xl">At a glance</h2>
+        <div class="grid grid-cols-2 md:grid-cols-5 gap-3">
+          <div class="rounded-lg border border-slate-200 bg-white p-4 text-center">
+            <div class="text-3xl font-bold text-slate-900">{{N}}</div>
+            <div class="text-xs text-slate-500 mt-1 uppercase tracking-wide">PRs merged</div>
+          </div>
+          <div class="rounded-lg border border-emerald-200 bg-emerald-50 p-4 text-center">
+            <div class="text-3xl font-bold text-emerald-700">{{N}}</div>
+            <div class="text-xs text-emerald-700 mt-1 uppercase tracking-wide">Changes to know</div>
+          </div>
+          <div class="rounded-lg border border-amber-200 bg-amber-50 p-4 text-center">
+            <div class="text-3xl font-bold text-amber-700">{{N}}</div>
+            <div class="text-xs text-amber-700 mt-1 uppercase tracking-wide">Action items</div>
+          </div>
+          <!-- Optional extra cards: DB migrations, a repo with zero merges, etc. Drop or add to fit. -->
+          <div class="rounded-lg border border-violet-200 bg-violet-50 p-4 text-center">
+            <div class="text-3xl font-bold text-violet-700">{{N}}</div>
+            <div class="text-xs text-violet-700 mt-1 uppercase tracking-wide">DB migration</div>
+          </div>
+          <div class="rounded-lg border border-slate-200 bg-white p-4 text-center">
+            <div class="text-3xl font-bold text-slate-400">{{N}}</div>
+            <div class="text-xs text-slate-500 mt-1 uppercase tracking-wide">{{e.g. in some-repo}}</div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ═══════════════ 3 · WHERE THE CHANGES LAND (journey) ═══════════════
+           A left-to-right Mermaid flow of the repo's user workflow; colour the
+           stages touched this window. :::new = something new (emerald) ·
+           :::changed = a change to an existing step (indigo). Cut this section only
+           if the repo has no meaningful staged workflow to draw. -->
+      <section class="space-y-4">
+        <h2 class="font-serif text-2xl">Where the changes land in your {{run / workflow}}</h2>
+        <p class="text-slate-600 max-w-3xl">
+          Highlighted changes affect the following parts, showing
+          <span class="text-emerald-700 font-medium">new</span> (in green) and
+          <span class="text-indigo-700 font-medium">changes</span> (in indigo).
+        </p>
+        <div class="rounded-lg border border-slate-200 bg-white p-5 grid-bg">
+          <pre class="mermaid">
+flowchart LR
+  A["<b>1 · {{Stage}}</b><br/>{{what changed}}<br/>#{{num}}"]:::changed
+  B["<b>2 · {{Stage}}</b><br/>{{+ new capability}}<br/>#{{num}}"]:::new
+  C["<b>3 · {{Stage}}</b>"]
+  A --> B --> C
+  classDef changed fill:#e0e7ff,stroke:#6366f1,stroke-width:2px,color:#1e1b4b;
+  classDef new fill:#d1fae5,stroke:#10b981,stroke-width:2px,color:#064e3b;
+          </pre>
+        </div>
+      </section>
+
+      <!-- ═══════════════ 4 · THE N CHANGES WORTH KNOWING (card grid) ═══════════════
+           One <article> per functional change. Left rule colour tracks the primary
+           badge: emerald-400 new · sky-400 fix · rose-400 removed · slate-300 docs.
+           The right-aligned "area" chip is OPTIONAL — a generic label, or drop it. -->
+      <section class="space-y-5">
+        <h2 class="font-serif text-2xl">The {{N}} changes worth knowing</h2>
+        <div class="grid md:grid-cols-2 gap-4">
+
+          <!-- ─ example: a new feature ─ -->
+          <article class="card-rule border-emerald-400 rounded-r-lg bg-white shadow-sm p-5 space-y-3">
+            <div class="flex flex-wrap items-center gap-2 text-xs">
+              <span class="px-2 py-0.5 rounded-full bg-emerald-100 text-emerald-800 font-semibold">{{New / feature}}</span>
+              <!-- add more badges as needed, e.g. a violet DB-migration or amber action badge -->
+              <span class="ml-auto font-mono text-slate-500">{{optional area}}</span>
+            </div>
+            <h3 class="font-semibold text-lg leading-snug">{{Short, plain title of the change}}</h3>
+            <p class="text-sm text-slate-600 leading-relaxed">
+              {{One plain-language impact sentence: what the user now runs / configures / gets.
+              Use <code class="font-mono bg-stone-100 px-1 rounded">code</code> for commands and flags.}}
+            </p>
+            <!-- optional heads-up / action line, colour-matched to a badge -->
+            <p class="text-sm text-amber-700"><strong>Action:</strong> {{only if the human confirmed one}}</p>
+            <a class="text-sm text-indigo-600 hover:underline font-mono" href="{{PR_URL}}">{{repo}} #{{num}} · merged {{YYYY-MM-DD}}</a>
+          </article>
+
+          <!-- ─ example: a bug fix that needs action ─ -->
+          <article class="card-rule border-sky-400 rounded-r-lg bg-white shadow-sm p-5 space-y-3">
+            <div class="flex flex-wrap items-center gap-2 text-xs">
+              <span class="px-2 py-0.5 rounded-full bg-sky-100 text-sky-800 font-semibold">Bug fix</span>
+              <span class="px-2 py-0.5 rounded-full bg-amber-100 text-amber-800 font-semibold">⚠ {{Action}}</span>
+              <span class="ml-auto font-mono text-slate-500">{{optional area}}</span>
+            </div>
+            <h3 class="font-semibold text-lg leading-snug">{{title}}</h3>
+            <p class="text-sm text-slate-600 leading-relaxed">{{impact sentence}}</p>
+            <p class="text-sm text-amber-700"><strong>Action:</strong> {{what to do}}</p>
+            <a class="text-sm text-indigo-600 hover:underline font-mono" href="{{PR_URL}}">{{repo}} #{{num}} · merged {{YYYY-MM-DD}}</a>
+          </article>
+
+          <!-- A wide docs/removed card can span both columns: add class md:col-span-2 -->
+
+        </div>
+      </section>
+
+      <!-- ═══════════════ 5 · ACTION CHECKLIST ═══════════════
+           HUMAN-CONFIRMED ITEMS ONLY. Omit this whole <section> if none apply.
+           Severity label: Required = rose-700 · If needed / Good to know = slate-500. -->
+      <section class="space-y-4">
+        <h2 class="font-serif text-2xl">Before your next run — action checklist</h2>
+        <div class="rounded-lg border border-amber-200 bg-amber-50 p-6 space-y-4">
+          <label class="flex items-start gap-3">
+            <input type="checkbox" class="mt-1 h-4 w-4 accent-amber-600" />
+            <span class="text-sm text-slate-700">
+              <span class="font-semibold text-rose-700 uppercase text-xs tracking-wide mr-2">Required</span>
+              <strong>{{Confirmed action title.}}</strong> {{What to do and why}}
+              (<a class="text-indigo-600 hover:underline font-mono" href="{{PR_URL}}">#{{num}}</a>).
+            </span>
+          </label>
+          <label class="flex items-start gap-3">
+            <input type="checkbox" class="mt-1 h-4 w-4 accent-amber-600" />
+            <span class="text-sm text-slate-700">
+              <span class="font-semibold text-slate-500 uppercase text-xs tracking-wide mr-2">If needed</span>
+              <strong>{{Conditional action.}}</strong> {{when it applies}}
+              (<a class="text-indigo-600 hover:underline font-mono" href="{{PR_URL}}">#{{num}}</a>).
+            </span>
+          </label>
+          <!-- repeat per confirmed item; use "Good to know" (slate-500) for FYI items -->
+        </div>
+      </section>
+
+      <!-- ═══════════════ 6 · BY REPOSITORY ═══════════════
+           One bar per merged PR. indigo-500 = user-facing · stone-300 = internal.
+           (No explanatory legend line here — it was removed.) -->
+      <section class="space-y-5">
+        <h2 class="font-serif text-2xl">By repository</h2>
+
+        <div class="space-y-3">
+          <!-- one block per repo -->
+          <div class="rounded-lg border border-slate-200 bg-white p-4">
+            <div class="flex items-center justify-between mb-2">
+              <span class="font-mono text-sm font-semibold">{{repo}}</span>
+              <span class="text-xs text-slate-500">{{N}} merged · {{M}} user-facing</span>
+            </div>
+            <div class="flex gap-1">
+              <span class="h-6 flex-1 rounded-sm bg-indigo-500" title="#{{num}}"></span>
+              <span class="h-6 flex-1 rounded-sm bg-stone-300" title="#{{num}} {{deps/ci}}"></span>
+              <!-- one <span> per merged PR -->
+            </div>
+          </div>
+
+          <!-- a repo with zero merges in-window -->
+          <div class="rounded-lg border border-slate-200 bg-white p-4">
+            <div class="flex items-center justify-between mb-2">
+              <span class="font-mono text-sm font-semibold">{{repo}}</span>
+              <span class="text-xs text-slate-500">0 merged</span>
+            </div>
+            <div class="h-6 rounded-sm border border-dashed border-stone-300 flex items-center justify-center text-xs text-slate-400">
+              nothing merged this window
+            </div>
+          </div>
+        </div>
+
+        <!-- full per-PR detail, collapsed -->
+        <details class="rounded-lg border border-slate-200 bg-white p-4">
+          <summary class="flex items-center gap-2 font-medium text-slate-800">
+            <span class="chev text-indigo-500">▶</span> Full per-PR detail (all {{N}} merged PRs)
+          </summary>
+          <div class="mt-4 space-y-6 text-sm">
+            <div>
+              <h4 class="font-mono font-semibold mb-2">{{repo}}</h4>
+              <ul class="space-y-1.5 text-slate-600 list-disc pl-5">
+                <li><a class="text-indigo-600 hover:underline font-mono" href="{{PR_URL}}">#{{num}}</a> — {{one-line summary}}. <span class="text-emerald-700">user-facing</span></li>
+                <li><a class="text-indigo-600 hover:underline font-mono" href="{{PR_URL}}">#{{num}}</a> — {{one-line summary}}. <span class="text-slate-500">ci / deps</span></li>
+                <!-- one <li> per merged PR in this repo -->
+              </ul>
+            </div>
+            <!-- repeat one <div> per repo -->
+          </div>
+        </details>
+      </section>
+
+      <!-- ═══════════════ 7 · FOOTER (keep) ═══════════════ -->
+      <footer class="pt-8 border-t border-slate-200 text-xs text-slate-400 space-y-1">
+        <p>Generated {{TODAY}} · window: PRs merged {{SINCE}} → {{UNTIL}} · source: merged GitHub PRs.</p>
+        <!-- optional: pointer to a prose companion file if you wrote one -->
+        <p>Prose companion: <code class="font-mono">{{companion.md}}</code> (same folder).</p>
+      </footer>
+
+    </main>
+  </body>
+</html>

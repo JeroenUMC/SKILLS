@@ -229,7 +229,7 @@ Show:
 1. **Diagnosis** — what was wrong with the original issue.
 2. **Refined issue** — the complete replacement text.
 3. **Open questions / assumptions** — only the ones that matter.
-4. **Definition of Ready status** — Ready or Not ready, with the remaining gap.
+4. **Definition of Ready status** — Ready or Not ready, with the remaining gap. State explicitly what the duplicate check found (or that none was run), per issue.
 5. **Publication metadata** — milestone, labels, native blockers, external dependencies, and informational references.
 
 Ask the user to approve the refined issue and its publication metadata before modifying or publishing it, unless the surrounding workflow explicitly authorizes direct edits. Clearly distinguish a proposed refinement from an approved and published issue.
@@ -237,6 +237,11 @@ Ask the user to approve the refined issue and its publication metadata before mo
 After approval and publication, report the resulting issue number and URL for every created or
 updated issue. Apply the approved milestone, labels, and native blocking relationships; do not
 silently broaden the scope during publication.
+
+A native blocking relationship is distinct from the "Blocked by" prose section. Create it via
+`gh api repos/{owner}/{repo}/issues/{number}/dependencies/blocked_by -F issue_id=<database id>` —
+the blocking issue's numeric `id` field (from `gh api .../issues/{number} --jq .id`), not its
+display number — or the equivalent GitHub UI control.
 
 ## Refined issue template
 

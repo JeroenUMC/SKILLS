@@ -1,6 +1,6 @@
 ---
 name: refine
-description: Refine an existing issue or work item into a clear, SMART, right-sized item with explicit acceptance criteria, Definition of Done, dependencies, and a Definition of Ready check.
+description: Refine a rough issue into a right-sized, actionable work item with checkable acceptance criteria.
 disable-model-invocation: true
 relationships:
   hands-off-to: [orchestrator-implement-issue]
@@ -8,314 +8,139 @@ relationships:
 
 # Refine
 
-Turn a rough, tangled, or underspecified issue into a **ready-for-human** or **ready-for-agent** work item without prematurely prescribing implementation.
+Turn a rough, tangled, or underspecified issue into a **ready-for-human** or **ready-for-agent** work item without prescribing the implementation.
 
-The goal is not to make an issue longer. The goal is to make the work **clear, bounded, testable, valuable, and actionable**.
+The goal is not a longer issue. The goal is work that is clear, bounded, checkable, valuable, and actionable.
 
 ## When to use
 
-Use `/refine` when an issue has one or more of these smells:
-
-- The reader cannot quickly explain the problem and desired outcome.
-- The issue mixes several outcomes or appears larger than roughly 2 days of work.
-- Acceptance criteria are vague, incomplete, duplicated, or not testable.
-- The Definition of Done is missing or mixed into acceptance criteria.
+- The reader cannot state the problem and the desired outcome after reading it.
+- The issue mixes several outcomes, or looks larger than roughly 2 days of work.
+- Acceptance criteria are missing, duplicated, or unverifiable without asking the author.
 - Scope, exclusions, edge cases, or dependencies are unclear.
-- The issue prescribes a solution before the problem is understood.
-- The value or intended user is missing.
-- Timing is ambiguous, invented, or absent when timing matters.
-- Different parts of the issue contradict each other.
-- The issue is actually an epic, initiative, investigation, or follow-up rather than a single buildable ticket.
+- It prescribes a solution before the problem is understood.
+- The value or the intended user is missing.
+- Parts of the issue contradict each other.
+- It is really an epic, an investigation, or a follow-up rather than one buildable ticket.
+
+## The body format is not defined here
+
+**Read `~/.claude/skills/reference/issue-format.md` in full before composing a single line of a refined body.** It is the single source of truth for the section template, the bar an acceptance criterion must clear, the evidence table, how blockers and critical path are expressed, and the `gh` commands that set native relationships. This skill governs *how you arrive at* the content; that file governs *what the content looks like*. Writing a body from memory of the format is how issues drift out of sync with it.
 
 ## Refinement principles
 
-### 1. Clarify the problem before the solution
+### Clarify the problem before the solution
 
-Extract the real user, problem, desired outcome, and value.
+Extract the real user, problem, outcome, and value.
 
-Prefer:
+Where the work has direct user or product value, write `As a <user>, I want <capability> so that <benefit>` rather than a technical task statement. Where the underlying outcome is reliability, maintainability, security, or operations, state *that* outcome — "replace X with Y" dressed as a user story hides which of them the issue is actually for.
 
-> As a <user>, I want <capability> so that <benefit>.
+Preserve the technical constraints, ADR decisions, compatibility requirements, and security requirements already recorded. Invent none.
 
-over a technical task statement when the work has direct user or product value.
+### Ground the context in what you verified
 
-Do not turn “replace X with Y” into a user story when the underlying issue is really a reliability, maintainability, security, or operational outcome. State that outcome instead.
+When the issue makes a claim about current behaviour, check it against the source, tests, or history before recording it as fact. What you measured goes in `## Context` with the file, command, or commit you checked; a claim you could not verify is labelled there as unverified.
 
-Preserve known technical constraints, ADR decisions, compatibility requirements, and security requirements. Do not invent new ones.
+`## Context` is the section a reader lands on weeks later with none of today's conversation available. Write it for that reader.
 
-### 2. Make scope explicit
+### Make scope explicit
 
-State what is included and, when useful, what is explicitly out of scope.
+State what is included, and what is deliberately excluded when something plausibly creeps in. A strong issue leaves the implementer knowing where to stop.
 
-A strong issue should leave the implementer knowing where to stop.
+### Write acceptance criteria a second person can check
 
-### 3. Make the issue SMART
+Each criterion names a concrete artifact — a file, command, sheet, column, value, exit code, rendered string — and states an outcome someone other than the author can observe. The bar and its worked examples live in `issue-format.md`; apply them to every criterion before filing.
 
-Check the item explicitly:
+Cover the success paths and the edge or error cases that change the outcome. Where the only check is manual, say what the person runs and what they should see.
 
-- **Specific:** Who, what, context, and outcome are clear.
-- **Measurable:** Completion can be observed through testable acceptance criteria.
-- **Achievable:** The scope fits known capacity and dependencies.
-- **Relevant:** The reason for doing it is clear and connected to the broader goal.
-- **Time-bound:** A real deadline, milestone, or delivery window is captured when one exists. Never invent one; use “No external deadline” when appropriate.
+The acceptance criteria carry the whole verification burden. Nothing backs them up, so anything that must be true at the end is a criterion or is untracked.
 
-Mark missing information as an explicit **gap** rather than silently filling it.
+### Right-size against INVEST
 
-### 4. Write acceptance criteria as behaviour
+Aim for roughly **2 days of work or less** where practical, and check the item is **I**ndependent where practical, **N**egotiable in implementation, **V**aluable, **E**stimable, **S**mall, **T**estable.
 
-Acceptance criteria should be independently verifiable and should describe the observable boundary of the work.
+When it fails the size test, recommend a split by user-observable outcome rather than by technical layer — a coherent vertical slice stays one ticket even when it touches frontend, backend, and database.
 
-Prefer Given/When/Then where it improves precision:
+### Preserve uncertainty
 
-- **Given** the relevant starting state
-- **When** the user/system performs an action
-- **Then** the observable result is true
+Label what you do not know instead of filling it in:
 
-Cover important success paths and meaningful edge/error cases. Do not enumerate implementation details as acceptance criteria.
+- **Open question** — a decision still owed, which does not block starting. Reach for these; an issue with none usually has unknowns nobody examined.
+- **Assumption** — believed true, unverified, surfaced so a wrong one fails early.
+- **Out of scope** — deliberately excluded, with where that work goes instead.
 
-Avoid criteria such as:
+A blocker means the work cannot meaningfully start without it. Everything else is a reference.
 
-- “Code is clean.”
-- “The API works.”
-- “Handle errors correctly.”
-- “Add tests.”
+### Settle the publication metadata
 
-Those belong in the Definition of Done or need to be made observable and concrete.
+Before publishing or updating, determine:
 
-### 5. Separate Acceptance Criteria from Definition of Done
-
-**Acceptance Criteria** define whether the requested behaviour is correct.
-
-**Definition of Done** defines whether the work is complete enough to be considered finished by the team.
-
-Use the project's established Definition of Done when one exists. Otherwise use this baseline, tailoring only when justified:
-
-- [ ] Acceptance criteria are all verified.
-- [ ] Appropriate automated tests are added or updated, and they pass.
-- [ ] Existing relevant tests/CI pass.
-- [ ] Code meets project conventions and has no known avoidable quality issues.
-- [ ] Relevant documentation or operational updates are completed.
-- [ ] No unresolved review or verification issues remain.
-
-Do not turn the DoD into a checklist of every possible engineering activity. Keep it relevant to the issue.
-Repository/version recording belongs in the DoD unless it is user-observable behavior.
-
-### 6. Check right-sizing and INVEST
-
-Determine whether the item is a coherent vertical slice and whether it is small enough to implement safely.
-
-Aim for roughly **2 days of work or less** where practical.
-
-Check **INVEST**:
-
-- **Independent** where practical
-- **Negotiable** in implementation details
-- **Valuable**
-- **Estimable**
-- **Small**
-- **Testable**
-
-If the issue fails the size test, recommend a split by **user-observable outcome**, not by technical layer.
-
-### 7. Surface dependencies and unknowns
-
-Identify:
-
-- tickets that genuinely block this work
-- external teams or systems that must act
-- missing product/design decisions
-- missing data, fixtures, credentials, environments, or other prerequisites
-- assumptions that must be confirmed
-
-Do not turn every relationship into a blocker. A blocker means the issue cannot meaningfully start without the dependency.
-
-### 8. Preserve uncertainty instead of inventing certainty
-
-When information is unavailable, label it clearly:
-
-- **Open question** — requires a decision.
-- **Assumption** — currently believed true but not verified.
-- **Dependency** — another party/work item must provide something.
-- **Out of scope** — explicitly excluded.
-
-This keeps the issue honest and prevents hidden scope.
-
-### 9. Make publication metadata explicit
-
-Issue metadata is part of a usable work item, not an afterthought. Before publishing or updating an
-issue, determine and validate:
-
-- the target milestone;
-- whether an existing milestone, a new milestone, or no milestone is the best fit;
-- the tracking repository and issue;
-- the implementation repository, if different;
-- whether implementation follow-up issues are being created now or deferred;
+- the target milestone — existing, new, or none, each considered explicitly;
+- the tracking repository and issue, and the implementation repository when it differs;
 - workflow readiness: `ready-for-human`, `ready-for-agent`, or `agent/blocked`;
-- non-workflow labels to preserve, such as domain or team labels;
-- true native GitHub blocking relationships;
+- the domain and team labels already on the issue, which stay;
+- native blocking and sub-issue relationships;
 - duplicate or overlapping existing issues.
 
-Use the repository's existing canonical labels. Do not silently create or rename `ready-for-agent`
-or `ready-for-human`. Do not mark an implementation issue `ready-for-agent` while a critical human
-decision remains unresolved. Human-owned research, decisions, and external actions are
-`ready-for-human`; blocked implementation issues are `agent/blocked`.
-
-If `agent/blocked` is unavailable, use the repository's canonical blocked equivalent.
-
-Preserve unrelated labels unless there is an explicit reason to change them. A dependency mentioned
-in prose is not automatically a blocker: use a native blocking relationship only when the work
-cannot meaningfully proceed without it.
+Use the repository's existing canonical labels; `ready-for-agent` and `ready-for-human` are adopted as found, never created or renamed here. Where `agent/blocked` is absent, use the repository's canonical blocked equivalent. Human-owned research, decisions, and external actions are `ready-for-human`; an implementation issue with a critical human decision still open is `ready-for-human` or `agent/blocked`.
 
 ## Process
 
 ### 1. Read the issue in full
 
-Use the issue body, comments, linked references, and relevant project context. Do not refine from the title alone.
+Body, comments, linked references, and the surrounding project context. Refining from the title alone is the common failure.
 
-When the issue makes implementation or current-behaviour claims, verify them against the current source,
-tests, documentation, or relevant history before classifying them as defects or requirements. Record the
-commit/date checked, or mark the claim as unverified when current evidence is unavailable.
-
-For batches or complex dependencies, delegate parallel issue diagnosis and milestone analysis to subagents; the main agent reconciles findings and owns synthesis, approval, and publication.
+For a batch, or a tangled dependency web, delegate per-issue diagnosis and milestone analysis to subagents; you reconcile the findings and own synthesis, approval, and publication.
 
 ### 2. Diagnose before rewriting
 
-Summarize the current problems briefly under:
+Summarize the current problems briefly, reporting only the categories that bite: clarity, scope, acceptance-criteria gaps, dependencies and unknowns, sizing.
 
-- Clarity
-- Scope
-- SMART gaps
-- Acceptance criteria gaps
-- Definition of Done gaps
-- Dependencies / unknowns
-- Sizing / INVEST
+### 3. Rewrite into the issue format
 
-Only report categories that matter.
+Follow `~/.claude/skills/reference/issue-format.md`. Preserve the original intent, decisions, constraints, and useful evidence; preserve no prose merely because it was there.
 
-### 3. Produce a refined issue
+For a proposed split, produce each resulting issue separately and state which blocks which. Check existing issues for duplicates before proposing a new one.
 
-Rewrite the issue into the template below.
+### 4. Run the Definition of Ready check
 
-Do not preserve bad prose just because it was in the source. Preserve the original intent, decisions, constraints, and useful evidence.
+An issue is **Ready** when:
 
-For a proposed split, produce each resulting issue separately and state which issue blocks which.
-Check existing issues for duplicates before proposing a new issue.
-
-### 4. Run a Definition of Ready check
-
-A refined issue is **Ready** when:
-
-- [ ] The desired outcome and value are clear.
+- [ ] The desired outcome and its value are clear.
 - [ ] Scope and important exclusions are clear.
-- [ ] Acceptance criteria are specific, observable, and testable.
-- [ ] The Definition of Done is present and relevant.
-- [ ] Dependencies and important unknowns are identified.
-- [ ] The work is right-sized or explicitly marked as needing decomposition.
-- [ ] The timing expectation is known, or “No external deadline” is explicit.
+- [ ] Every acceptance criterion names a concrete artifact and an outcome checkable without asking the author.
+- [ ] The criteria cover the edge and error cases that matter.
+- [ ] Real blockers are separated from references, and each is expressed as a native relationship.
+- [ ] The work is right-sized, or explicitly marked as needing decomposition.
 - [ ] No unresolved question is critical to starting implementation.
-- [ ] The target milestone is known, or the issue is explicitly marked outside a milestone.
-- [ ] Existing, new, and no-milestone options were considered.
-- [ ] The workflow readiness label is correct and compatible with the remaining unknowns.
-- [ ] Existing canonical workflow labels and relevant domain labels are identified.
-- [ ] Duplicate/overlapping issues were checked.
-- [ ] Native blockers are identified separately from external dependencies and informational references.
+- [ ] The milestone is settled, with existing, new, and none all considered.
+- [ ] The workflow readiness label matches the remaining unknowns.
+- [ ] The duplicate check was run.
 
-Do not claim “Ready” when a critical ambiguity remains.
+Report **Not ready** with the remaining gap whenever a critical ambiguity survives.
 
-### 5. Present the result for approval
+### 5. Present for approval
 
 Show:
 
-1. **Diagnosis** — what was wrong with the original issue.
+1. **Diagnosis** — what was wrong with the original.
 2. **Refined issue** — the complete replacement text.
-3. **Open questions / assumptions** — only the ones that matter.
-4. **Definition of Ready status** — Ready or Not ready, with the remaining gap. State explicitly what the duplicate check found (or that none was run), per issue.
-5. **Publication metadata** — milestone, labels, native blockers, external dependencies, and informational references.
+3. **Open questions and assumptions** — the ones that matter.
+4. **Ready status** — Ready or Not ready with the gap, plus what the duplicate check found for each issue, or that none was run.
+5. **Publication metadata** — milestone, labels, native relationships, external dependencies, references.
 
-Ask the user to approve the refined issue and its publication metadata before modifying or publishing it, unless the surrounding workflow explicitly authorizes direct edits. Clearly distinguish a proposed refinement from an approved and published issue.
+Ask for approval before modifying or publishing, unless the surrounding workflow authorizes direct edits. Keep a proposal visibly distinct from a published issue.
 
-After approval and publication, report the resulting issue number and URL for every created or
-updated issue. Apply the approved milestone, labels, and native blocking relationships; do not
-silently broaden the scope during publication.
+### 6. Publish, then wire
 
-A native blocking relationship is distinct from the "Blocked by" prose section. Create it via
-`gh api repos/{owner}/{repo}/issues/{number}/dependencies/blocked_by -F issue_id=<database id>` —
-the blocking issue's numeric `id` field (from `gh api .../issues/{number} --jq .id`), not its
-display number — or the equivalent GitHub UI control.
+Where the refinement is a proposal — a review, a dry run, a body the user asked to see — the work ends at approval. Report the body and stop.
 
-## Refined issue template
+Otherwise publish and wire the relationships per `~/.claude/skills/reference/issue-format.md`, apply the approved milestone and labels, and report the number and URL of every issue created or updated.
 
-<issue-template>
+## Guardrails
 
-# <Short title, ideally under 10 words>
+- A vague requirement earns an open question; acceptance criteria are only written where the outcome is actually known.
+- An implementation preference stays a suggestion. Only a required outcome becomes a criterion.
+- Detail earns its place by removing ambiguity.
 
-## User story
-
-As a <user>, I want <capability> so that <benefit>.
-
-## Context
-
-What problem exists today and why this work matters.
-
-## Scope
-
-**In scope**
-
-- <bounded outcome>
-
-**Out of scope**
-
-- <explicit exclusion, when useful>
-
-## Acceptance criteria
-
-- [ ] Given <context>, when <action>, then <observable result>.
-- [ ] Given <edge/error state>, when <action>, then <observable result>.
-- [ ] <Additional measurable criterion as needed>.
-
-## Definition of Done
-
-- [ ] Acceptance criteria are all verified.
-- [ ] Appropriate automated tests are added or updated, and they pass.
-- [ ] Existing relevant tests/CI pass.
-- [ ] Code meets project conventions and has no known avoidable quality issues.
-- [ ] Relevant documentation or operational updates are completed.
-- [ ] No unresolved review or verification issues remain.
-
-## Blocked by
-
-- <issue/dependency>, or “None — can start immediately”.
-
-## Dependencies
-
-- Native blocker: <issue number>, if applicable.
-- External dependency: <person/team/system>, if applicable.
-- Informational reference: <issue number or document>, if applicable.
-
-## Timing
-
-<deadline / milestone / delivery window>, or “No external deadline”.
-
-## Open questions
-
-- <decision required before implementation>, if any.
-
-## Assumptions
-
-- <assumption>, if any.
-
-</issue-template>
-
-## What good refinement does not do
-
-- It does not invent acceptance criteria to make a vague requirement look complete.
-- It does not convert implementation preferences into requirements.
-- It does not bury blockers in prose.
-- It does not duplicate the Definition of Done into acceptance criteria.
-- It does not split a coherent vertical slice into frontend/backend/database tickets merely because those are separate technical layers.
-- It does not add deadlines that nobody provided.
-- It does not make every issue maximally detailed; detail should exist where it removes meaningful ambiguity.
-- It does not treat every issue reference as a blocker or replace native GitHub relationships with prose alone.
-- It does not publish an issue with a missing milestone or incompatible workflow label when the repository uses those controls.
-
-A good refined issue should be understandable by someone who did not attend the original conversation.
+A refined issue is understandable by someone who did not attend the original conversation.

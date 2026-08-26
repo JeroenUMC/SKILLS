@@ -36,7 +36,7 @@ The limit on this is the **[smart zone](https://www.aihero.dev/ai-coding-diction
 ## On-ramps
 
 A starting situation that generates work, then merges onto the main flow.
-- **An issue exists, but it's unclear, oversized, underspecified, or not ready to implement** → **`/refine`**. It turns a rough issue into a small, SMART, agent-ready issue: clarifying the user value and problem, defining explicit acceptance criteria and a Definition of Done, surfacing dependencies and unknowns, and right-sizing the work. It does not invent requirements or prescribe implementation details. If refinement reveals that the work is actually a larger effort, hand it back into the main flow at `/grill-with-docs` or `/to-spec` rather than forcing a large feature into one issue.
+- **An issue exists, but it's unclear, oversized, underspecified, or not ready to implement** → **`/refine`**. It turns a rough issue into a small, SMART, agent-ready issue: clarifying the user value and problem, writing acceptance criteria that each name a concrete noun and a checkable outcome, surfacing blockers and unknowns, and right-sizing the work. It does not invent requirements or prescribe implementation details. If refinement reveals that the work is actually a larger effort, hand it back into the main flow at `/grill-with-docs` or `/to-spec` rather than forcing a large feature into one issue.
    - **Bugs and requests piling up** → **`/triage`**. It moves issues through triage roles and produces agent-ready issues, which **`/orchestrator-implement-issue`** later picks up.
 
   Triage is only for issues **you didn't create** — bug reports, incoming feature requests, anything that arrives raw. Tickets that `/to-tickets` produced are already agent-ready, so **don't triage them**.

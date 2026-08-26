@@ -85,8 +85,9 @@ Show counts and a one-line summary per item. Let the maintainer pick.
    - relevant to the project's stated goals
    - time-bound when a real deadline exists
    - right-sized and independently deliverable
-   - explicit about scope, dependencies, and important unknowns
-   - clear about its Definition of Done
+   - explicit about scope, blockers, and important unknowns
+   - carrying acceptance criteria that each name a concrete noun — a file, command, value, exit
+     code, or rendered string — and an outcome a second person could check without asking the author
 
    Do not invent a deadline when none exists, and do not reject an issue merely because no deadline was supplied.
 3. **Verify the claim.** Before any grilling, check that the claim holds up. For a bug, reproduce it from the reporter's steps. For a PR, confirm the diff does what it claims — check it out, run the relevant tests or commands. Report what happened: confirmed (with code path), failed, or insufficient detail (a strong `needs-info` signal). A confirmed verification makes a much stronger agent brief.
@@ -97,10 +98,13 @@ Show counts and a one-line summary per item. Let the maintainer pick.
 
    - clear problem / user value
    - specific desired outcome
-   - testable acceptance criteria
-   - explicit Definition of Done
+   - acceptance criteria where every criterion names a concrete noun (file,
+     command, value, exit code, rendered string) and states an outcome
+     checkable without asking the author — see
+     `~/.claude/skills/reference/issue-format.md`
    - clear scope and out-of-scope boundaries
-   - dependencies and important unknowns identified
+   - blockers and important unknowns identified — blockers as native tracker
+     relationships, not body prose
    - independently deliverable and appropriately sized
    - no unresolved domain terminology
    - no implementation prescription unless a technical decision is already

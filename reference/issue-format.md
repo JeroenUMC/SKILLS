@@ -121,6 +121,26 @@ in which PR or commit, and what the numbers are now — and leave `## Acceptance
 only what remains open. Verify each carried-forward claim against the current state of the code
 rather than the issue's own earlier prose; a stale headline number is worse than none.
 
+## Numbers and lists go stale — write what re-derives them
+
+Prose ages gracefully; a count or an enumeration does not. "Six of 22 entries are TEMPORARY", "282
+unmapped", "the 6 multi-antibody values" — each is a fact that was true when written and false the
+moment something elsewhere changes. Nothing re-checks a number sitting in prose, so it rots
+silently and is trusted anyway because it reads as precise.
+
+- **Point at the source instead of copying its output.** Name the file, column, or command that
+  yields the number rather than the number alone: "`make check-mappers` reports the unmapped
+  count" outlives "282 unmapped" by construction, because there is nothing in it to fall out of
+  date.
+- **State deltas, not absolutes**, wherever two criteria in the same milestone might both cite the
+  same moving total. "20 fewer than before this issue" survives a sibling issue landing first;
+  "262, down from 282" does not, and two issues both claiming the same baseline will strand one of
+  them the moment either merges.
+- **Never snapshot a live system's state into a body or a sidecar file.** A generated file that
+  records what `gh api` currently says — a relationship graph, a label set, an open-question list
+  — is stale from the moment it is written. Record the query, not the answer: name the exact
+  command a reader re-runs to get the current state, rather than pasting today's result.
+
 ## Evidence goes in a table
 
 Measured findings — affected values, row counts, before/after states — go in a table, not prose
@@ -183,8 +203,19 @@ gh api graphql -f query='
   }' -f parent=<parent-node-id> -f child=<child-node-id>
 ```
 
+**Removing a stale blocker** — same shape, `removeBlockedBy` / `removeSubIssue`:
+
+```bash
+gh api graphql -f query='
+  mutation($issue:ID!, $blocker:ID!) {
+    removeBlockedBy(input:{issueId:$issue, blockingIssueId:$blocker}) { issue { number } }
+  }' -f issue=<blocked-node-id> -f blocker=<blocker-node-id>
+```
+
 Read the current state with `gh api repos/<owner>/<repo>/issues/<n>/dependencies/blocked_by` and
-`… /sub_issues`.
+`… /sub_issues` — read it fresh every time; do not trust a graph recorded earlier in the same
+session. A closed issue still wired as a blocker is not rare, it is the default outcome of nobody
+re-checking after it closed.
 
 Create every issue first, then wire the relationships in a second pass — a blocker's number is
 unknown until it exists.
@@ -201,6 +232,23 @@ Wire it manually, or re-run once resolved.
 
 The body never absorbs the relationship as a fallback. A `Blocked by: #42` line in prose is
 invisible to GitHub and drifts out of date, which is the state this format exists to end.
+
+## Structural drift is mechanical — check for it
+
+Content drift (a stale count, an outdated claim) needs judgement to catch. Structural drift does
+not — it is a handful of `gh` queries against the issues a pass touched:
+
+- a blocker in `dependencies/blocked_by` whose state is `closed`;
+- `agent/blocked` (or the repo's equivalent) with an empty `blocked_by`;
+- `ready-for-agent` with a non-empty `blocked_by`;
+- an `#<n>` reference in the body to an issue number that does not exist, or that resolves to the
+  wrong issue because it was copied from a local filename rather than a created issue;
+- a body path (`docs/...`) that does not exist on the tracking branch yet.
+
+Where the repo has a script for this, run it after publishing or editing more than one issue in a
+pass. Where it does not, these six checks are cheap enough to run by hand with `gh api` before
+calling a multi-issue pass finished — the failure mode they catch is not "did I write this
+correctly" but "did something I already wrote become wrong while I kept working".
 
 ## Issue types
 

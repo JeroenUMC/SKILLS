@@ -139,6 +139,8 @@ Where the refinement is a proposal — a review, a dry run, a body the user aske
 
 Otherwise publish and wire the relationships per `~/.claude/skills/reference/issue-format.md`, apply the approved milestone and labels, and report the number and URL of every issue created or updated.
 
+Where multiple issues are touched in one pass, re-read each one's live relationships and labels immediately before wiring — never carry forward what an earlier step in this same pass observed. An edge or a label can go stale between two issues in one session as easily as between two days; the tracker's current state is the only source, never a note taken earlier in the conversation. Where the repo has a milestone-drift check (see `issue-format.md`), run it after publishing and report what it finds.
+
 ## Guardrails
 
 - A vague requirement earns an open question; acceptance criteria are only written where the outcome is actually known.

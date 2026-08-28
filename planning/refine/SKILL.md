@@ -84,6 +84,8 @@ Before publishing or updating, determine:
 
 Use the repository's existing canonical labels; `ready-for-agent` and `ready-for-human` are adopted as found, never created or renamed here. Where `agent/blocked` is absent, use the repository's canonical blocked equivalent. Human-owned research, decisions, and external actions are `ready-for-human`; an implementation issue with a critical human decision still open is `ready-for-human` or `agent/blocked`.
 
+Re-derive the readiness label from the body you just wrote, and set it explicitly even when it lands on the value it already had. The label the issue arrived with describes the issue as it arrived; refinement is what changes whether work can start, and splitting a blocked issue to free its buildable half is exactly the case where the old label survives and silently discards the gain. `agent/blocked` earns its place only where `## Context` names a live blocking condition. The frontier query reads the label, not the prose.
+
 ## Process
 
 ### 1. Read the issue in full
@@ -114,7 +116,7 @@ An issue is **Ready** when:
 - [ ] The work is right-sized, or explicitly marked as needing decomposition.
 - [ ] No unresolved question is critical to starting implementation.
 - [ ] The milestone is settled, with existing, new, and none all considered.
-- [ ] The workflow readiness label matches the remaining unknowns.
+- [ ] The workflow readiness label was re-derived from the finished body, not inherited.
 - [ ] The duplicate check was run.
 
 Report **Not ready** with the remaining gap whenever a critical ambiguity survives.

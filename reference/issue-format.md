@@ -17,6 +17,11 @@ As a <specific person or role>, I want <capability>, so that <consequence>.
 <Prose. The measured state of things today, the file or command it lives in, and the cost of
 leaving it alone. This is the section a reader lands on in three weeks.>
 
+## Acceptance criteria
+
+- [ ] <checkable outcome>
+- [ ] <checkable outcome>
+
 ## Scope
 
 **In scope**
@@ -25,10 +30,8 @@ leaving it alone. This is the section a reader lands on in three weeks.>
 **Out of scope**
 - <what it deliberately does not change, and where that work goes instead>
 
-## Acceptance criteria
-
-- [ ] <checkable outcome>
-- [ ] <checkable outcome>
+<## Depth sections — row shapes, key design, safety constraints, evidence tables. As many as
+the work earns, each with a heading that says what is under it.>
 
 ## Assumptions
 
@@ -39,7 +42,7 @@ leaving it alone. This is the section a reader lands on in three weeks.>
 - <unresolved, does not block starting>
 ```
 
-`## User story`, `## Context`, and `## Acceptance criteria` are always present.
+`## User story`, `## Context`, and `## Acceptance criteria` are always present, in that order.
 
 `## Scope` is present wherever something plausibly creeps in. Where the boundary matters in only
 one direction — nothing to fence in, but real work to fence out — use a plain `## Out of scope`
@@ -49,9 +52,24 @@ section in its place. Where the issue's edges are obvious, omit both.
 `## Open questions` — an issue with none is usually an issue whose unknowns went unexamined.
 
 **Custom sections are welcome.** Where material earns its own heading — a reproduction, a
-mechanism, a safety constraint the next person must not rediscover — give it one, placed after
-`## Context`. The standard sections are a floor, not a cage; an issue that has outgrown them is a
-good issue, and flattening it back into `## Context` costs more than it gains.
+mechanism, a safety constraint the next person must not rediscover — give it one. The standard
+sections are a floor, not a cage; an issue that has outgrown them is a good issue, and flattening
+it back into `## Context` costs more than it gains.
+
+They go **below the acceptance criteria**. A reader who needs the key design or the row shape has
+already decided to do the work; a reader deciding *whether* to do it needs the story, the state of
+things, and what done looks like. Depth placed above the criteria buries the point of the issue
+behind the details of it.
+
+### The reader's-eye check
+
+Before filing, count the words above `## Acceptance criteria`. **Someone opening the issue cold
+reaches the criteria inside roughly 400 words.** Past that, the fix is almost never to cut the
+material — it is to move it below the criteria, or out of the issue entirely into a doc the repo
+keeps. Facts that outlive this issue belong in the repo, referenced by a pointer; an issue is not
+a home for repo-level truth.
+
+An issue that fails this check reads well in its parts and still cannot be picked up.
 
 ## What makes an acceptance criterion checkable
 

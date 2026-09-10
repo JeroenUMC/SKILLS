@@ -10,11 +10,13 @@ relationships:
 
 You don't remember every skill, so ask.
 
-A **flow** is a path through the skills. Most paths run along one **main flow**, and two **on-ramps** merge onto it. Everything else is standalone, or a vocabulary layer that runs underneath.
+A **flow** is a path through the skills. Most paths run along one **main flow**, and a handful of **on-ramps** merge onto it. Everything else is standalone, a vocabulary layer that runs underneath, or plumbing for starting and ending sessions.
 
 ## The main flow: idea → ship
 
 The route most work travels. You have an idea and want it built.
+
+Steps 1–3 can be walked by hand, or driven for you: **`/orchestrator-idea-to-ship`** runs the same sharpen → prototype-if-needed → spec → tickets sequence as one supervised flow, pausing for unresolved product decisions and for your approval of the ticket breakdown before handing each ticket on. Reach for it when you want the flow held together for you; walk the steps yourself when you want to stop and think between them.
 
 1. **`/grill-with-docs`** — sharpen the idea by interview. Start here when you **have a codebase**: it's stateful, retaining what it learns in `CONTEXT.md` and ADRs. (No codebase? Use `/grill-me` — see Standalone. Both run the same `/grilling` primitive; `grill-with-docs` is the one that leaves a paper trail.)
 2. **Branch — can you settle every question in conversation?** If a question needs a runnable answer (state, business logic, a UI you have to see), detour through a prototype, bridged by **`/handoff`** in both directions (see Crossing sessions):
@@ -25,7 +27,7 @@ The route most work travels. You have an idea and want it built.
    - **Yes** → **`/to-spec`** (turn the thread into a spec), then **`/to-tickets`** to split it into tracer-bullet tickets, each declaring its **blocking edges**. On a local tracker that's one file per ticket under `.scratch/<feature>/issues/`, worked blockers-first by hand; on a real tracker the edges become native blocking links, so any ticket whose blockers are done can be grabbed — kick off **`/orchestrator-implement-issue`** per ticket, **clearing context between each one**.
    - **No** → **`/orchestrator-implement-issue`** right here, in the same context window.
 
-   Either way, **`/orchestrator-implement-issue`** builds each issue by driving **`/tdd`** internally — one red-green slice at a time — then verifies the full relevant test suite, runs **`/code-review`**, and commits. For milestone work, `/orchestrator-implement-milestone` delegates to it in an isolated worktree and it pushes a draft PR. Reach for **`/tdd`** on its own when you just want to build a concrete behaviour test-first without a full spec, and **`/code-review`** on its own whenever you want to review a branch or PR against a fixed point.
+   Either way, **`/orchestrator-implement-issue`** builds each issue by driving **`/tdd`** internally — one red-green slice at a time — then verifies the full relevant test suite, runs **`/code-review-eng`**, and commits. For milestone work, `/orchestrator-implement-milestone` delegates to it in an isolated worktree and it pushes a draft PR. Reach for **`/tdd`** on its own when you just want to build a concrete behaviour test-first without a full spec, and **`/code-review-eng`** on its own whenever you want to review a branch or PR against a fixed point.
 
 ### Context hygiene
 
@@ -66,6 +68,13 @@ Two model-invoked references that run *beneath* the other skills — each the si
 - **`/handoff`** — when a thread is full or you need to branch off (e.g. into a `/prototype` session), this compacts the conversation into a markdown file. You don't continue in place — you **open a new session and reference that file** to carry the context across. It's the bridge between context windows, in either direction. Use it when you want a **fresh session** but need the **current conversation preserved**.
 - **`/compact`** (built-in) — stay in the **same conversation**, letting the earlier turns be summarized. Use it at **intentional breaks between phases**, when you don't mind losing the verbatim history. Don't compact mid-phase — the agent can lose its way. `/handoff` forks; `/compact` continues.
 
+## Closing a session
+
+Where `/handoff` carries a session forward, these two close one out.
+
+- **`/finalize`** — run manually at the end of a session to establish an **evidence-backed stopping point**. It reconstructs what you asked for, compares it against what actually happened, and classifies every gap (`completed`, `blocked`, `deferred`, `abandoned`, `needs-decision`), then inspects branch and worktree state and attributes each changed path. It deliberately does **not** finish stray work or tidy the repo — it tells you where you actually stand. It invokes `/skill-audit` as its last step.
+- **`/skill-audit`** — an evidence-backed review of the skills the session used, hunting contradictory instructions, duplicated meanings, and broken handoffs between them. Findings need an observed or structurally verified basis; an untested hypothesis isn't one. Reach for it directly when you've just been *editing* skills, where **`/writing-great-skills`** is the reference for how to write them well and this is the check on what you wrote.
+
 ## Standalone
 
 Off the main flow entirely.
@@ -73,6 +82,9 @@ Off the main flow entirely.
 - **`/grill-me`** — the same relentless interview as `/grill-with-docs`, but for when you have **no codebase**. Stateless: it saves nothing locally, builds no `CONTEXT.md`. Reach for it to sharpen any plan or design that doesn't live in a repo.
 - **`/prototype`** — a small, throwaway program that answers one design question: does this state model feel right, or what should this UI look like. Throwaway from day one — keep the answer, delete the code. It's the detour in step 2 of the main flow, but reach for it any time a design question is hard to settle on paper.
 - **`/research`** — delegate reading legwork to a **background agent**: it investigates a question against **primary sources**, then leaves a cited Markdown file in the repo. Keep working while it reads. The file it produces is something to take *into* the main flow at `/grill-with-docs` — research feeds the thinking, it doesn't replace it.
+- **`/questionnaire`** — when the answer lives only in a human expert's head, not in a source `/research` could read. Turns the ask into closed questions with enumerated options plus a private **answer key** naming what each option changes, then reads the replies back against it so a non-answer ("approved", "yes but check") is recorded as still open rather than rounded into a decision.
+- **`/resolving-merge-conflicts`** — you're mid-merge or mid-rebase and it's conflicted. It resolves from **original intent** rather than from the diff: read the commits, PRs, and issues behind each side, preserve both intents where they can coexist, and where they can't, pick the one matching the merge's stated goal and name the trade-off. It invents no new behaviour and it never `--abort`s — it always finishes the merge, checks green, and commits.
+- **`/changelog`** — a self-contained HTML changelog for a GitHub repo over a time window, sourced strictly from **merged PRs** and written from the repo *user's* point of view. The load-bearing call is functional vs internal: a change earns a card only if a user would notice it, and required actions are proposed as candidates for you to confirm, never inferred from code.
 - **`/teach`** — learn a concept over multiple sessions, using the current directory as a stateful workspace.
 - **`/writing-great-skills`** — reference for writing and editing skills well.
 

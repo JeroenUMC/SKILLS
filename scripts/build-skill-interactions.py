@@ -48,7 +48,10 @@ def load() -> tuple[list[dict], list[dict]]:
     edges: list[dict] = []
     paths: set[Path] = set()
     for node in nodes:
-        skill_path = ROOT / node["kind"] / node["id"] / "SKILL.md"
+        # Skills live flat: ROOT/<id>/SKILL.md. "kind" is a taxonomy label for the
+        # report only — never a path segment. Claude Code only discovers skills one
+        # level below the skills root, so nesting them by kind hides them entirely.
+        skill_path = ROOT / node["id"] / "SKILL.md"
         if not skill_path.is_file():
             raise ValueError(f"missing skill file for {node['id']}: {skill_path}")
         paths.add(skill_path)
@@ -69,10 +72,12 @@ def load() -> tuple[list[dict], list[dict]]:
                     "relation": relation,
                     "category": RELATION_CATEGORIES[relation],
                 })
-    unexpected = sorted(ROOT.glob("*/SKILL.md"))
-    unexpected += sorted(path for path in ROOT.glob("*/*/SKILL.md") if path not in paths)
-    if unexpected:
-        raise ValueError(f"skill files are not declared in graph/skills.json: {unexpected}")
+    nested = sorted(ROOT.glob("*/*/SKILL.md"))
+    if nested:
+        raise ValueError(f"skills must sit directly under the skills root or they are not discoverable: {nested}")
+    undeclared = sorted(path for path in ROOT.glob("*/SKILL.md") if path not in paths)
+    if undeclared:
+        raise ValueError(f"skill files are not declared in graph/skills.json: {undeclared}")
     return nodes, edges
 
 

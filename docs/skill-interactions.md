@@ -1,6 +1,6 @@
 # Skill Interactions
 
-Inventory: 28 skills. Relationships: 23 declared edges.
+Inventory: 29 skills. Relationships: 23 declared edges.
 
 Directional edges describe workflow or dependency direction. Non-directional edges describe compatible skills or supporting vocabulary and do not imply sequence.
 
@@ -12,7 +12,7 @@ Directional edges describe workflow or dependency direction. Non-directional edg
 | `skill-router` | invokes | `orchestrator-implement-issue` |
 | `skill-router` | invokes | `orchestrator-implement-milestone` |
 | `orchestrator-implement-issue` | uses | `tdd` |
-| `orchestrator-implement-issue` | uses | `code-review` |
+| `orchestrator-implement-issue` | uses | `code-review-eng` |
 | `orchestrator-implement-milestone` | delegates | `orchestrator-implement-issue` |
 | `orchestrator-idea-to-ship` | invokes | `grill-with-docs` |
 | `orchestrator-idea-to-ship` | invokes | `to-spec` |

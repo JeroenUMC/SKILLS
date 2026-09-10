@@ -1,5 +1,5 @@
 {
-  "schema_version": 1,
+  "schema_version": 2,
   "skills": [
     {"id": "skill-router", "kind": "router"},
     {"id": "setup-skills", "kind": "setup"},
@@ -7,7 +7,7 @@
     {"id": "orchestrator-implement-milestone", "kind": "orchestrator"},
     {"id": "orchestrator-idea-to-ship", "kind": "orchestrator"},
     {"id": "changelog", "kind": "utility"},
-    {"id": "code-review", "kind": "engineering"},
+    {"id": "code-review-eng", "kind": "engineering"},
     {"id": "codebase-design", "kind": "vocabulary"},
     {"id": "diagnosing-bugs", "kind": "engineering"},
     {"id": "domain-modeling", "kind": "vocabulary"},
@@ -17,6 +17,7 @@
     {"id": "handoff", "kind": "session"},
     {"id": "improve-codebase-architecture", "kind": "engineering"},
     {"id": "prototype", "kind": "exploration"},
+    {"id": "questionnaire", "kind": "research"},
     {"id": "refine", "kind": "planning"},
     {"id": "research", "kind": "research"},
     {"id": "resolving-merge-conflicts", "kind": "maintenance"},

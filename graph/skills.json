@@ -7,6 +7,7 @@
     {"id": "orchestrator-implement-milestone", "kind": "orchestrator"},
     {"id": "orchestrator-idea-to-ship", "kind": "orchestrator"},
     {"id": "changelog", "kind": "utility"},
+    {"id": "paper-trail", "kind": "audit"},
     {"id": "code-review-eng", "kind": "engineering"},
     {"id": "codebase-design", "kind": "vocabulary"},
     {"id": "diagnosing-bugs", "kind": "engineering"},

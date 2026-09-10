@@ -1,0 +1,166 @@
+<title>{{SET_TITLE}}</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<style>
+  :root { color-scheme: light; }
+  body { background: #fafaf9; }
+  .font-serif { font-family: ui-serif, Georgia, "Times New Roman", serif; }
+</style>
+
+<!--
+  Paper-trail scaffold. Swap every {{PLACEHOLDER}}; repeat blocks marked REPEAT.
+  Section order is the argument - see OUTPUT.md. Verdict and the case against
+  come BEFORE any account of the work.
+-->
+
+<div class="mx-auto max-w-3xl px-5 py-12 text-slate-800">
+
+  <!-- 1 · HEADER -->
+  <header class="mb-12">
+    <p class="text-xs uppercase tracking-widest text-slate-400 mb-2">Paper trail</p>
+    <h1 class="font-serif text-4xl leading-tight text-slate-900">{{SET_TITLE}}</h1>
+    <div class="mt-4 flex flex-wrap gap-2 text-xs">
+      <!-- REPEAT chip -->
+      <span class="rounded-full bg-stone-200 px-3 py-1 text-stone-700">{{CHIP}}</span>
+    </div>
+  </header>
+
+  <!-- 2 · THE CLAIM -->
+  <section class="mb-10">
+    <h2 class="font-serif text-2xl text-slate-900 mb-3">The claim</h2>
+    <blockquote class="border-l-4 border-indigo-400 bg-white py-3 pl-4 pr-3 text-lg leading-relaxed">
+      {{CLAIM_SENTENCE}}
+    </blockquote>
+    <p class="mt-2 text-xs text-slate-500">Source: <a class="underline" href="{{CLAIM_SOURCE_URL}}">{{CLAIM_SOURCE}}</a></p>
+
+    <!-- OMIT when the set made no sub-claims -->
+    <ul class="mt-4 list-disc space-y-1 pl-5 text-sm text-slate-600">
+      <li>{{SUB_CLAIM}}</li> <!-- REPEAT -->
+    </ul>
+
+    <div class="mt-6 rounded-lg bg-stone-100 p-4">
+      <p class="text-xs uppercase tracking-wider text-slate-500 mb-1">The question being answered</p>
+      <p class="font-serif text-lg italic text-slate-800">&ldquo;{{READER_QUESTION}}&rdquo;</p>
+      <p class="mt-1 text-xs text-slate-500">{{QUESTION_ASKED_BY}}</p>
+    </div>
+  </section>
+
+  <!-- 3 · VERDICT -->
+  <section class="mb-10 rounded-xl border border-stone-200 bg-white p-6">
+    <div class="flex items-baseline gap-3">
+      <h2 class="font-serif text-2xl text-slate-900">Verdict</h2>
+      <!-- holds emerald · holds narrowly sky · partly holds amber · unsupported rose -->
+      <span class="rounded-full {{VERDICT_CLASSES}} px-3 py-1 text-xs font-semibold uppercase tracking-wide">{{VERDICT}}</span>
+    </div>
+    <p class="mt-3 leading-relaxed">{{VERDICT_READING}}</p>
+    <div class="mt-5 border-t border-stone-200 pt-4">
+      <p class="text-xs uppercase tracking-wider text-slate-500 mb-2">What would settle the rest</p>
+      <ul class="list-disc space-y-1 pl-5 text-sm">
+        <li>{{SETTLING_CHECK}}</li> <!-- REPEAT -->
+      </ul>
+    </div>
+  </section>
+
+  <!-- 4 · THE CASE AGAINST -->
+  <section class="mb-10">
+    <h2 class="font-serif text-2xl text-slate-900 mb-1">The case against</h2>
+    <p class="mb-4 text-sm text-slate-500">The strongest hostile reading of this evidence, most damaging first.</p>
+    <ol class="space-y-4">
+      <!-- REPEAT one <li> per point -->
+      <li class="rounded-lg border-l-4 border-amber-400 bg-white py-3 pl-4 pr-3">
+        <p class="font-medium text-slate-900">{{POINT_TITLE}}</p>
+        <p class="mt-1 text-sm leading-relaxed text-slate-700">{{POINT_DETAIL}}</p>
+        <p class="mt-2 text-xs text-slate-500"><a class="underline" href="{{POINT_URL}}">{{POINT_SOURCE}}</a></p>
+      </li>
+    </ol>
+  </section>
+
+  <!-- 5 · WHAT THE ARTIFACTS SHOW -->
+  <section class="mb-10">
+    <h2 class="font-serif text-2xl text-slate-900 mb-1">What the artifacts show</h2>
+    <p class="mb-4 text-sm text-slate-500">Counted from files at <code class="rounded bg-stone-200 px-1">{{COMMIT_SHA}}</code>, not from prose.</p>
+    <div class="grid gap-3 sm:grid-cols-2">
+      <!-- REPEAT one card per counted fact -->
+      <div class="rounded-lg border border-stone-200 bg-white p-4">
+        <p class="font-serif text-3xl text-slate-900">{{FIGURE}}</p>
+        <p class="text-sm text-slate-700">{{FIGURE_LABEL}}</p>
+        <p class="mt-1 font-mono text-xs text-slate-400">{{FIGURE_SOURCE_FILE}}</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- 6 · WHAT WAS EXCLUDED — omit only if nothing was excluded, and say so -->
+  <section class="mb-10">
+    <h2 class="font-serif text-2xl text-slate-900 mb-1">What was excluded, and why</h2>
+    <p class="mb-4 text-sm text-slate-500">Every deliberate omission, with the reason given at the time.</p>
+    <div class="overflow-x-auto">
+      <table class="w-full border-collapse text-sm">
+        <thead>
+          <tr class="border-b border-stone-300 text-left text-xs uppercase tracking-wider text-slate-500">
+            <th class="py-2 pr-3">Excluded</th><th class="py-2 pr-3">Reason</th><th class="py-2">Source</th>
+          </tr>
+        </thead>
+        <tbody>
+          <!-- REPEAT -->
+          <tr class="border-b border-stone-200 align-top">
+            <td class="py-2 pr-3 font-mono text-xs">{{EXCLUDED_VALUE}}</td>
+            <td class="py-2 pr-3">{{EXCLUSION_REASON}}</td>
+            <td class="py-2"><a class="underline text-slate-500" href="{{EXCLUSION_URL}}">{{EXCLUSION_SOURCE}}</a></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- 7 · CRITERIA LEDGER -->
+  <section class="mb-10">
+    <h2 class="font-serif text-2xl text-slate-900 mb-1">Criteria ledger</h2>
+    <p class="mb-4 text-sm text-slate-500">
+      Every acceptance criterion, graded on evidence found — not on whether its box was ticked.
+    </p>
+    <div class="mb-4 flex flex-wrap gap-2 text-xs">
+      <span class="rounded-full bg-emerald-100 px-2.5 py-1 text-emerald-800">met</span>
+      <span class="rounded-full bg-sky-100 px-2.5 py-1 text-sky-800">met elsewhere</span>
+      <span class="rounded-full bg-amber-100 px-2.5 py-1 text-amber-800">no evidence found</span>
+    </div>
+
+    <!-- REPEAT one <details> per issue -->
+    <details class="mb-2 rounded-lg border border-stone-200 bg-white">
+      <summary class="cursor-pointer px-4 py-3 text-sm">
+        <span class="font-mono text-slate-500">#{{ISSUE_NUMBER}}</span>
+        <span class="font-medium text-slate-900">{{ISSUE_TITLE}}</span>
+        <span class="ml-2 text-xs text-slate-500">{{GRADE_TALLY}}</span>
+      </summary>
+      <div class="overflow-x-auto border-t border-stone-200 px-4 py-3">
+        <table class="w-full border-collapse text-sm">
+          <tbody>
+            <!-- REPEAT one row per criterion -->
+            <tr class="border-b border-stone-100 align-top">
+              <td class="py-2 pr-3">{{CRITERION_TEXT}}</td>
+              <td class="w-36 py-2 pr-3">
+                <span class="whitespace-nowrap rounded-full {{GRADE_CLASSES}} px-2 py-0.5 text-xs">{{GRADE}}</span>
+              </td>
+              <td class="w-52 py-2 text-xs text-slate-500">{{EVIDENCE_OR_SEARCHED_WHERE}}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </details>
+  </section>
+
+  <!-- 8 · BLIND SPOTS — never omitted -->
+  <section class="mb-10 rounded-xl border border-stone-300 bg-stone-100 p-6">
+    <h2 class="font-serif text-2xl text-slate-900 mb-1">Blind spots</h2>
+    <p class="mb-3 text-sm text-slate-600">What this audit did not read, and why.</p>
+    <ul class="list-disc space-y-1 pl-5 text-sm">
+      <!-- REPEAT — or a single "None — every referenced repo and artifact was read." -->
+      <li>{{BLIND_SPOT}}</li>
+    </ul>
+  </section>
+
+  <!-- 9 · FOOTER -->
+  <footer class="border-t border-stone-200 pt-5 text-xs leading-relaxed text-slate-500">
+    <p>Generated {{GENERATED_DATE}} · selector <code class="rounded bg-stone-200 px-1">{{SELECTOR}}</code> · audited at <code class="rounded bg-stone-200 px-1">{{COMMIT_SHA}}</code></p>
+    <p class="mt-1">Reproduce: <code class="rounded bg-stone-200 px-1">{{COLLECT_INVOCATION}}</code></p>
+  </footer>
+
+</div>

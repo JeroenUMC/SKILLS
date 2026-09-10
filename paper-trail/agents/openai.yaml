@@ -1,0 +1,5 @@
+interface:
+  display_name: "Paper Trail"
+  short_description: "Prosecute the claim a set of issues made"
+policy:
+  allow_implicit_invocation: false

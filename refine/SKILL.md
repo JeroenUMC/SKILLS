@@ -1,6 +1,6 @@
 ---
 name: refine
-description: Refine a rough issue into a right-sized, actionable work item with checkable acceptance criteria.
+description: Refine an issue's content — challenge whether and how it should be done, then shape what survives into a right-sized work item with checkable acceptance criteria.
 disable-model-invocation: true
 relationships:
   hands-off-to: [orchestrator-implement-issue]
@@ -8,9 +8,9 @@ relationships:
 
 # Refine
 
-Turn a rough, tangled, or underspecified issue into a **ready-for-human** or **ready-for-agent** work item without prescribing the implementation.
+Refinement in the Scrum sense: first **challenge** the issue — is its goal still right, and is this the right way to reach it? — then turn what survives into a **ready-for-human** or **ready-for-agent** work item without prescribing the implementation.
 
-The goal is not a longer issue. The goal is work that is clear, bounded, checkable, valuable, and actionable.
+The goal is not a longer issue. The goal is work that is worth doing, clear, bounded, checkable, and actionable. An issue that fails the challenge may leave refinement closed, merged, or reprioritised rather than rewritten.
 
 ## When to use
 
@@ -22,6 +22,7 @@ The goal is not a longer issue. The goal is work that is clear, bounded, checkab
 - The value or the intended user is missing.
 - Parts of the issue contradict each other.
 - It is really an epic, an investigation, or a follow-up rather than one buildable ticket.
+- The world has moved since it was written — new facts, linked issues, or decisions may have changed its goal, answered it, or made it moot.
 
 ## The body format is not defined here
 
@@ -98,16 +99,32 @@ For a batch, or a tangled dependency web, delegate per-issue diagnosis and miles
 
 Summarize the current problems briefly, reporting only the categories that bite: clarity, scope, acceptance-criteria gaps, dependencies and unknowns, sizing.
 
-### 3. Rewrite into the issue format
+### 3. Challenge the content
 
-Follow `~/.claude/skills/reference/issue-format.md`. Preserve the original intent, decisions, constraints, and useful evidence; preserve no prose merely because it was there.
+Question the issue as a sceptical Product Owner would, using the tracker's current state and the evidence gathered in step 1 — not the issue's own framing. Answer each:
+
+- **Goal** — does the outcome still matter, given what has happened since the issue was written?
+- **Route** — is there a simpler or different way to the same outcome, or does the stated plan treat a symptom of a deeper problem?
+- **Overlap** — does another open or closed issue already cover it, answer it, or make it moot? Cite the issue.
+- **Priority** — do its Importance and Urgency (or the repo's equivalent) still fit, given its real deadline and what it blocks?
+
+Give each a verdict — **holds**, **overturned** (with the evidence and a proposed replacement), or **open** (a question only the user can settle) — and state every verdict, including the ones that hold.
+
+The combined result picks the path onward: **rewrite** (continue to step 4), **merge** into another issue, **close** as moot or not worth doing, or **reprioritise**. Every overturned verdict is a proposal the user approves in step 6; the challenge informs the rewrite, and the user decides.
+
+Done when all four questions carry a verdict backed by something checked in this pass, and the path onward is named.
+
+### 4. Rewrite into the issue format
+
+On the **rewrite** path, follow `~/.claude/skills/reference/issue-format.md`. Carry forward the intent that survived the challenge, plus the decisions, constraints, and useful evidence; preserve no prose merely because it was there.
 
 For a proposed split, produce each resulting issue separately and state which blocks which. Check existing issues for duplicates before proposing a new one.
 
-### 4. Run the Definition of Ready check
+### 5. Run the Definition of Ready check
 
 An issue is **Ready** when:
 
+- [ ] All four challenge questions carry a stated verdict, and the issue's goal is one that held or was replaced with the user's approval.
 - [ ] The desired outcome and its value are clear.
 - [ ] Scope and important exclusions are clear.
 - [ ] Every acceptance criterion names a concrete artifact and an outcome checkable without asking the author.
@@ -121,23 +138,24 @@ An issue is **Ready** when:
 
 Report **Not ready** with the remaining gap whenever a critical ambiguity survives.
 
-### 5. Present for approval
+### 6. Present for approval
 
 Show:
 
 1. **Diagnosis** — what was wrong with the original.
-2. **Refined issue** — the complete replacement text.
-3. **Open questions and assumptions** — the ones that matter.
-4. **Ready status** — Ready or Not ready with the gap, plus what the duplicate check found for each issue, or that none was run.
-5. **Publication metadata** — milestone, labels, native relationships, external dependencies, references.
+2. **Challenge** — the four verdicts with their evidence, and the path onward.
+3. **Refined issue** — the complete replacement text, or on the merge/close/reprioritise path, the exact change proposed.
+4. **Open questions and assumptions** — the ones that matter.
+5. **Ready status** — Ready or Not ready with the gap, plus what the duplicate check found for each issue, or that none was run.
+6. **Publication metadata** — milestone, labels, native relationships, external dependencies, references.
 
 Ask for approval before modifying or publishing, unless the surrounding workflow authorizes direct edits. Keep a proposal visibly distinct from a published issue.
 
-### 6. Publish, then wire
+### 7. Publish, then wire
 
 Where the refinement is a proposal — a review, a dry run, a body the user asked to see — the work ends at approval. Report the body and stop.
 
-Otherwise publish and wire the relationships per `~/.claude/skills/reference/issue-format.md`, apply the approved milestone and labels, and report the number and URL of every issue created or updated.
+Otherwise publish and wire the relationships per `~/.claude/skills/reference/issue-format.md`, apply the approved milestone and labels, and report the number and URL of every issue created, updated, merged, or closed.
 
 Where multiple issues are touched in one pass, re-read each one's live relationships and labels immediately before wiring — never carry forward what an earlier step in this same pass observed. An edge or a label can go stale between two issues in one session as easily as between two days; the tracker's current state is the only source, never a note taken earlier in the conversation. Where the repo has a milestone-drift check (see `issue-format.md`), run it after publishing and report what it finds.
 

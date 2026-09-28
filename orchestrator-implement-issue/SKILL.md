@@ -20,7 +20,7 @@ Do not use standalone mode inside a milestone orchestration run.
 
 - Before implementation in either mode, fetch `origin/main` and confirm the work starts from the latest `origin/main`.
 - In delegated mode, work only in the assigned Git worktree and branch `agent/issue-<number>-<slug>` based on the fetched `origin/main`.
-- In both modes, do not merge, close issues, change project fields, release, or perform destructive operations.
+- In both modes, do not merge, close issues directly, change project fields, release, or perform destructive operations. A closing keyword in the PR body (see Finalize) is required, not a violation: GitHub closes the issue only when a human merges the PR.
 - The verification agent is read-only. The issue orchestrator owns all edits, including tests and review fixes.
 - Only `/orchestrator-implement-milestone` writes shared `state.json`.
 
@@ -32,7 +32,7 @@ Do not use standalone mode inside a milestone orchestration run.
 4. **Verify:** run relevant tests and check acceptance criteria. Run the full relevant test suite once at the end. In delegated mode, also spawn a read-only verification subagent.
 5. **Review:** perform the two-axis `/code-review-eng` covering Standards and Spec. In delegated mode, spawn the review subagent after verification.
 6. **Fix:** implement actionable review findings, document rejected or out-of-scope suggestions in the report, then rerun verification and relevant tests.
-7. **Finalize:** standalone mode commits locally and reports the result. Delegated mode commits with an issue-referencing message, pushes the branch, and opens a draft PR to `main`. Link the PR to the issue without closing it. Write PR bodies with actual Markdown newlines, not literal `\\n` escape sequences, and inspect the rendered body with `gh pr view --web` or the API before reporting the PR URL.
+7. **Finalize:** standalone mode commits locally and reports the result. Delegated mode commits with an issue-referencing message, pushes the branch, and opens a draft PR to `main`. Any PR this skill opens (delegated, or standalone when the user asks for one) must close its issue on merge: put `Closes #<number>` on its own line at the top of the PR body. Use a GitHub closing keyword (`Closes`/`Fixes`/`Resolves`); `Refs`, `Part of`, `Related to` or a bare `#<number>` link the issue but do **not** close it. The PR must target the default branch, since keywords are ignored on PRs to other bases. After creating the PR, verify the link with `gh pr view <pr> --json closingIssuesReferences --jq '.closingIssuesReferences[].number'`. If the issue number is missing, fix the body with `gh pr edit` before reporting. Only omit the keyword when the issue is explicitly partial (it lists further PRs still to come), and say so in the report. Write PR bodies with actual Markdown newlines, not literal `\\n` escape sequences, and inspect the rendered body with `gh pr view --web` or the API before reporting the PR URL.
 
 ## Pauses
 
